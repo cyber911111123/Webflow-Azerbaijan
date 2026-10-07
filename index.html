@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebFlow Azerbaijan — Interactive Creative Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #050508;
+            --surface: #101016;
+            --surface-hover: #181822;
+            --border: rgba(255, 255, 255, 0.08);
+            --gold: #f59e0b;
+            --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            opacity: 0;
+            animation: fadeInPage 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInPage {
+            to { opacity: 1; }
+        }
+
+        /* Intro Loader Animation with Perfect Circular Framed Logo */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #030305;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 9999;
+            animation: hideLoader 0.8s cubic-bezier(0.77, 0, 0.175, 1) 1.2s forwards;
+        }
+
+        .loader-logo-frame {
+            width: 90px;
+            height: 90px;
+            background: #000;
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
+            animation: pulseFrame 1s ease infinite alternate;
+        }
+
+        .loader-logo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Şəklin dairəyə tam oturması üçün */
+        }
+
+        .loader-content {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            animation: pulseLoader 1s ease infinite alternate;
+        }
+
+        @keyframes pulseFrame {
+            to { transform: scale(1.08); box-shadow: 0 0 45px rgba(245, 158, 11, 0.45); border-color: var(--gold); }
+        }
+
+        @keyframes pulseLoader {
+            to { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        @keyframes hideLoader {
+            to { transform: translateY(-100%); visibility: hidden; }
+        }
+
+        /* Floating Interactive Header & Navigation Buttons */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50px);
+            width: 90%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 24px;
+            background: rgba(16, 16, 22, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            animation: slideDownHeader 1s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
+        }
+
+        @keyframes slideDownHeader {
+            to { transform: translateX(-50%) translateY(0); }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-logo-frame {
+            width: 38px;
+            height: 38px;
+            background: #000;
+            border: 1.5px solid rgba(245, 158, 11, 0.4);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .brand:hover .brand-logo-frame {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .brand-logo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text span {
+            color: var(--gold);
+        }
+
+        /* Keçid Düymələri (Navigasiya) */
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 9px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background: var(--gold-gradient);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .social-circle-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .social-circle-btn:hover {
+            background: var(--gold-gradient);
+            color: #000;
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        /* Viewport & Pages Container */
+        .views-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 130px 6% 60px 6%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-view.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Page 1: Hero */
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+            text-transform: lowercase;
+            color: var(--gold);
+            font-size: 1.1em;
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #000;
+            padding: 12px 26px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Page 2: Pricing (40-50 AZN) */
+        .pricing-wrapper {
+            max-width: 1050px;
+            width: 100%;
+        }
+
+        .section-header-mini {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-header-mini span {
+            color: var(--gold);
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .section-header-mini h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .pricing-grid-clean {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .p-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 30px 24px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .p-box:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            background: var(--surface-hover);
+        }
+
+        .p-box.featured {
+            border: 1.5px solid var(--gold);
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--surface) 100%);
+        }
+
+        .badge-pop {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--gold-gradient);
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .p-box h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .p-desc {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .p-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .p-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .p-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .p-list li i {
+            color: var(--gold);
+            font-size: 0.7rem;
+        }
+
+        .p-action-btn {
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .p-box.featured .p-action-btn {
+            background: var(--gold-gradient);
+            color: #000;
+            border: none;
+        }
+
+        /* Page 3: Contact */
+        .contact-wrapper {
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .contact-card-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .contact-card-box h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .contact-card-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .channels-inline {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .ch-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .ch-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .ch-btn i {
+            color: var(--gold);
+        }
+
+        .form-grid-clean {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .f-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .f-control input, .f-control textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .f-control input:focus, .f-control textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .f-control textarea {
+            height: 90px;
+            resize: none;
+        }
+
+        .submit-btn-clean {
+            background: var(--gold-gradient);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn-clean:hover {
+            opacity: 0.95;
+        }
+
+        @media(max-width: 900px) {
+            body { overflow: auto; height: auto; }
+            .views-container { height: auto; }
+            .page-view { position: relative; height: auto; padding: 120px 5% 50px 5%; opacity: 1; visibility: visible; transform: none; margin-bottom: 30px; }
+            .pricing-grid-clean, .f-row, .channels-inline { grid-template-columns: 1fr; flex-direction: column; }
+            header { width: 92%; padding: 10px 15px; flex-direction: column; gap: 10px; border-radius: 15px; }
+            .nav-buttons { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Intro Loader Animation with Perfect Circular Framed Logo -->
+    <div id="loader">
+        <div class="loader-logo-frame">
+            <img src="https://i.hizliresim.com/tljefjyz.png" alt="Logo">
+        </div>
+        <div class="loader-content">WEBFLOW AZERBAIJAN</div>
+    </div>
+
+    <!-- Floating Header with Navigation Buttons -->
+    <header>
+        <div class="brand" onclick="switchPage('hero', event)">
+            <div class="brand-logo-frame">
+                <img src="https://i.hizliresim.com/tljefjyz.png" alt="Logo">
+            </div>
+            <span class="brand-text">WebFlow <span>Azerbaijan</span></span>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="switchPage('hero', event)">Ana Səhifə</button>
+            <button class="nav-btn" onclick="switchPage('pricing', event)">Qiymətlər</button>
+            <button class="nav-btn" onclick="switchPage('contact', event)">Əlaqə</button>
+        </div>
+
+        <div class="header-right">
+            <a href="https://www.instagram.com/webflow.0/" target="_blank" class="social-circle-btn" title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Viewport Container -->
+    <div class="views-container">
+
+        <!-- PAGE 1: HERO -->
+        <section id="hero" class="page-view active">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Eksklüziv Rəqəmsal Atelier
+                </div>
+                <h1>Standartlardan uzaq, <span>möhtəşəm</span> veb kodlaşdırma.</h1>
+                <p>Hosting və domen xərcləri olmadan, tamamilə fərdi dizayn edilmiş, qüsursuz animasiyalarla təchiz olunan və hər ekranda zərif görünən eksklüziv veb-saytların yaradılması.</p>
+                <div class="hero-buttons">
+                    <button class="btn-gold" onclick="switchPage('pricing', event)">Qiymətlərə Bax</button>
+                    <button class="btn-gold" style="background: var(--surface); border: 1px solid var(--border); color: var(--text-main);" onclick="switchPage('contact', event)">Sifariş Ver</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PRICING -->
+        <section id="pricing" class="page-view">
+            <div class="pricing-wrapper">
+                <div class="section-header-mini">
+                    <span>// İnvestisiya Matrisi</span>
+                    <h2>Şəffaf & Sərfəli Paketlər</h2>
+                </div>
+                <div class="pricing-grid-clean">
+                    <div class="p-box">
+                        <div>
+                            <h3>Landing Page</h3>
+                            <div class="p-desc">Şəxsi brendlər və qısa təqdimatlar üçün.</div>
+                            <div class="p-val">₼40</div>
+                            <ul class="p-list">
+                                <li><i class="fa-solid fa-check"></i> 1 səhifəlik kreativ dizayn</li>
+                                <li><i class="fa-solid fa-check"></i> Mobil uyğunlaşdırma</li>
+                                <li><i class="fa-solid fa-check"></i> Əlaqə forması quraşdırma</li>
+                                <li><i class="fa-solid fa-check"></i> Faylların tam təhvili</li>
+                            </ul>
+                        </div>
+                        <button class="p-action-btn" onclick="switchPage('contact', event)">Seçim Et</button>
+                    </div>
+
+                    <div class="p-box featured">
+                        <div class="badge-pop">Ən Seçilən</div>
+                        <div>
+                            <h3>Standart Veb Sayt</h3>
+                            <div class="p-desc">Kiçik bizneslər və xidmət sahələri üçün.</div>
+                            <div class="p-val">₼45</div>
+                            <ul class="p-list">
+                                <li><i class="fa-solid fa-check"></i> Çoxbölməli kreativ səhifə</li>
+                                <li><i class="fa-solid fa-check"></i> Zərif vizual animasiyalar</li>
+                                <li><i class="fa-solid fa-check"></i> Tam mobil optimizasiya</li>
+                                <li><i class="fa-solid fa-check"></i> Sürətli hazırlanma</li>
+                            </ul>
+                        </div>
+                        <button class="p-action-btn" onclick="switchPage('contact', event)">Seçim Et</button>
+                    </div>
+
+                    <div class="p-box">
+                        <div>
+                            <h3>Genişləndirilmiş Səhifə</h3>
+                            <div class="p-desc">Daha dərin dizayn və xüsusi detallar.</div>
+                            <div class="p-val">₼50</div>
+                            <ul class="p-list">
+                                <li><i class="fa-solid fa-check"></i> Genişləndirilmiş struktur</li>
+                                <li><i class="fa-solid fa-check"></i> Fərdi dizayn qərarları</li>
+                                <li><i class="fa-solid fa-check"></i> Tam texniki fayl təhvili</li>
+                            </ul>
+                        </div>
+                        <button class="p-action-btn" onclick="switchPage('contact', event)">Seçim Et</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: CONTACT -->
+        <section id="contact" class="page-view">
+            <div class="contact-wrapper">
+                <div class="contact-card-box">
+                    <h2>Layihəni Başlayaq</h2>
+                    <p>İstəklərini bizə yaz və ya sosial şəbəkələr vasitəsilə birbaşa əlaqə saxla.</p>
+                    
+                    <div class="channels-inline">
+                        <a href="https://www.instagram.com/webflow.0/" target="_blank" class="ch-btn">
+                            <i class="fa-brands fa-instagram"></i> @webflow.0
+                        </a>
+                        <a href="mailto:samsgoog28@gmail.com" class="ch-btn">
+                            <i class="fa-solid fa-envelope"></i> Gmail
+                        </a>
+                    </div>
+
+                    <form class="form-grid-clean" onsubmit="event.preventDefault(); alert('Müraciətiniz qəbul olundu! Tezliklə əlaqə saxlanılacaq.');">
+                        <div class="f-row">
+                            <div class="f-control">
+                                <input type="text" placeholder="Adınız" required>
+                            </div>
+                            <div class="f-control">
+                                <input type="text" placeholder="Əlaqə vasitəsi (Telefon / Email)" required>
+                            </div>
+                        </div>
+                        <div class="f-control">
+                            <textarea placeholder="Sayt haqqında istəkləriniz və qeydləriniz..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn-clean">Sifarişi Göndər</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JavaScript üçün Keçid Funksiyası -->
+    <script>
+        function switchPage(pageId, event) {
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            if (event && event.target.classList.contains('nav-btn')) {
+                event.target.classList.add('active');
+            } else {
+                navButtons.forEach(btn => {
+                    if ((pageId === 'hero' && btn.innerText.includes('Ana')) ||
+                        (pageId === 'pricing' && btn.innerText.includes('Qiymət')) ||
+                        (pageId === 'contact' && btn.innerText.includes('Əlaqə'))) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
